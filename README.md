@@ -1,572 +1,841 @@
-{
-  "name": "Bapak N8N Indonesia - Auto Clipper Video with Vizard AI",
-  "nodes": [
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "db577529-a0b0-4cdd-9c2d-27adcf2ee302",
-              "name": "vizard_api_key",
-              "value": "API_KEY_HERE",
-              "type": "string"
-            },
-            {
-              "id": "bc7aa714-a297-47df-91c8-6ab246521809",
-              "name": "video_type",
-              "value": "2",
-              "type": "string"
-            },
-            {
-              "id": "677c5107-634d-4c9a-921c-c82c99938d7f",
-              "name": "video_length",
-              "value": "[0]",
-              "type": "string"
-            },
-            {
-              "id": "aa6cb6f8-6db8-42de-ba31-e0e11630f29f",
-              "name": "video_ratio",
-              "value": "1",
-              "type": "string"
-            },
-            {
-              "id": "1d7cda63-cd0d-4c45-8df2-97e8e108c39a",
-              "name": "video_url",
-              "value": "={{ $json['URL Youtube (Bisa di custom mau URL apapun)'] }}",
-              "type": "string"
-            },
-            {
-              "id": "c027906c-eafa-4596-8979-dfc045707abd",
-              "name": "video_lang",
-              "value": "=auto",
-              "type": "string"
-            },
-            {
-              "id": "ccc22ee8-7d4e-4204-9fad-91820185b63d",
-              "name": "viral_score",
-              "value": "={{ $json['Skor Viral (0-100)'] }}",
-              "type": "number"
-            }
-          ]
-        },
-        "options": {
-
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Kelas 9D - Ocean Theme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #0077b6;
+            --secondary: #00b4d8;
+            --accent: #90e0ef;
+            --background: #caf0f8;
+            --white: rgba(255, 255, 255, 0.9);
+            --text-dark: #023e8a;
+            --success: #2a9d8f;
+            --danger: #e63946;
+            --warning: #00008b; /* Biru Gelap untuk Sakit */
         }
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [624, -608],
-      "id": "d638b82b-7af5-4b50-80a8-15b48cabebec",
-      "name": "Configuration"
-    },
-    {
-      "parameters": {
-        "url": "=https://elb-api.vizard.ai/hvizard-server-front/open-api/v1/project/query/{{ $json.projectId }}",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "VIZARDAI_API_KEY",
-              "value": "={{ $('Configuration').item.json.vizard_api_key }}"
-            }
-          ]
-        },
-        "options": {
 
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+            background-attachment: fixed; color: var(--text-dark); min-height: 100vh; display: flex;
         }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [848, -448],
-      "id": "170b9a0c-43db-4b86-b489-e44bea3b4e0d",
-      "name": "Get Status"
-    },
-    {
-      "parameters": {
 
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [624, -448],
-      "id": "5baefb33-46c0-4026-90a8-ed928c848814",
-      "name": "Wait",
-      "webhookId": "935bdb16-109c-434c-a084-0e6e4614369b"
-    },
-    {
-      "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.3); padding: 2rem; display: flex;
+            flex-direction: column; gap: 1rem;
+        }
+
+        .sidebar h2 { color: white; text-align: center; margin-bottom: 2rem; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+        .nav-btn {
+            padding: 12px 20px; background: rgba(255, 255, 255, 0.8); border: none; border-radius: 10px;
+            cursor: pointer; font-size: 16px; font-weight: 500; color: var(--primary);
+            transition: all 0.3s ease; text-align: left;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(0, 119, 182, 0.3); transform: translateX(5px);
+        }
+
+        /* Main Content */
+        .main-content { flex: 1; padding: 2rem; overflow-y: auto; height: 100vh; }
+
+        .section {
+            display: none; background: var(--white); backdrop-filter: blur(10px); border-radius: 20px;
+            padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); animation: fadeIn 0.4s ease-in-out;
+        }
+        .section.active { display: block; }
+
+        h1 { color: var(--primary); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+
+        /* Dashboard Charts Container */
+        .charts-container {
+            display: flex; gap: 20px; margin-bottom: 2rem; flex-wrap: wrap;
+        }
+        
+        .chart-box {
+            flex: 1; min-width: 250px; background: white; padding: 20px; border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-top: 5px solid var(--secondary);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .chart-box h3 { color: var(--text-dark); margin-bottom: 10px; font-size: 16px; text-align: center;}
+        .chart-box .persen-teks { font-size: 28px; font-weight: bold; color: var(--primary); margin-top: 10px; }
+        
+        /* Canvas untuk diagram agar tidak terlalu besar */
+        .canvas-wrapper { width: 180px; height: 180px; } 
+
+        /* Tables */
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: white; border-radius: 10px; overflow: hidden; font-size: 14px; }
+        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #eee; vertical-align: middle; }
+        th { background-color: var(--primary); color: white; font-weight: 500; }
+        tr:hover { background-color: #f8f9fa; }
+
+        /* Forms & Inputs */
+        input[type="text"], input[type="number"], input[type="date"] {
+            width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-family: inherit;
+        }
+        .input-small { width: 60px !important; padding: 8px !important; text-align: center;}
+        
+        .radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .radio-group label { cursor: pointer; display: flex; align-items: center; gap: 3px; font-size: 13px; }
+
+        .settings-box {
+            background: rgba(0, 180, 216, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 10px; border: 1px dashed var(--primary); flex-wrap: wrap;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; flex-direction: row; flex-wrap: wrap; justify-content: center; padding: 1rem; }
+            .sidebar h2 { width: 100%; margin-bottom: 0.5rem; }
+            .main-content { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>🌊 Kelas 9D</h2>
+        <button class="nav-btn active" onclick="showSection('dashboard')">🏠 Dashboard</button>
+        <button class="nav-btn" onclick="showSection('absen')">📝 Absen</button>
+        <button class="nav-btn" onclick="showSection('kas')">💰 Kas</button>
+        <button class="nav-btn" onclick="showSection('jurnal')">📖 Jurnal</button>
+    </div>
+
+    <div class="main-content">
+        
+        <div id="dashboard" class="section active">
+            <h1>Dashboard Analytics</h1>
+            
+            <div class="charts-container">
+                <div class="chart-box">
+                    <h3>Kehadiran Kelas (1 Semester)</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="absenChart"></canvas>
+                    </div>
+                    <div class="persen-teks" id="teks-persen-absen">0%</div>
+                </div>
+
+                <div class="chart-box">
+                    <h3>Pencapaian Kas (1 Semester)</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="kasChart"></canvas>
+                    </div>
+                    <div class="persen-teks" id="teks-persen-kas">0%</div>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                <h3 style="color: var(--primary); margin-bottom: 10px;">Rekap Absen Hari Ini:</h3>
+                <div style="display: flex; gap: 20px; font-weight: bold; flex-wrap: wrap;">
+                    <span style="color: var(--success);">Hadir: <span id="count-hadir">0</span></span>
+                    <span style="color: #f4a261;">Sakit: <span id="count-sakit">0</span></span>
+                    <span style="color: #2a9d8f;">Izin: <span id="count-izin">0</span></span>
+                    <span style="color: var(--danger);">Alpa: <span id="count-alpa">0</span></span>
+                </div>
+            </div>
+        </div>
+
+        <div id="absen" class="section">
+            <h1>Buku Absensi Semester</h1>
+            
+            <div class="settings-box">
+                <label style="font-weight: bold;">Total Hari Efektif 1 Semester:</label>
+                <input type="number" id="total-hari-semester" class="input-small" value="100" oninput="hitungSemuaSemester()">
+                <span>Hari</span>
+            </div>
+            
+            <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                *Catatan: Nama berwarna <b style="color:red;">Merah</b> = Alpa > 5. Nama berwarna <b style="color:darkblue;">Biru Gelap</b> = Sakit > 5.
+            </p>
+
+            <div class="table-container">
+                <table id="tabel-absen">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Siswa</th>
+                            <th>Harian</th>
+                            <th>Total Hadir</th>
+                            <th>Total Sakit</th>
+                            <th>Total Alpa</th>
+                            <th>% Smstr</th>
+                        </tr>
+                    </thead>
+                    <tbody id="body-absen">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="kas" class="section">
+            <h1>Buku Kas Semester</h1>
+            
+            <div class="settings-box">
+                <label style="font-weight: bold;">Target Kas Per Siswa (1 Smstr): Rp</label>
+                <input type="number" id="target-kas-siswa" style="width: 120px; padding: 8px;" value="150000" oninput="prosesSemuaKas()">
+                <div style="margin-left: auto; font-weight: bold; color: var(--primary);">
+                    Terkumpul: <span id="total-kas-rp">Rp 0</span>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="tabel-kas">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Siswa</th>
+                            <th>Nominal Bayar (Rp)</th>
+                            <th>Kas Harian (Auto)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="body-kas">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="jurnal" class="section">
+            <h1>Jurnal Kelas</h1>
+            <div style="margin-bottom: 15px;">
+                <label>Tanggal</label>
+                <input type="date" id="jurnal-tanggal">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label>Mata Pelajaran & Guru</label>
+                <input type="text" placeholder="Contoh: Matematika - Pak Budi">
+            </div>
+            <button style="background: var(--primary); color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;" onclick="alert('Jurnal berhasil disimpan!')">Simpan Jurnal</button>
+        </div>
+
+    </div>
+
+    <script>
+        const siswa = [
+            "Agung Ramaindra Syahputra", "Ainun Tiyas martiningsih", "Alessia Alzena Riangga",
+            "Almaira Faiqha", "Alya Faliha", "Amirah Julveni Maulana", "Andi Aqil",
+            "Aurora Felicia Angelie", "Bilqis Melani", "Chaya muja syatira",
+            "Fadhil oktavian nabil", "fahmi firjatullah", "faiz Alfarizi",
+            "farhan umaydillah radjiansyah", "fathir pradipta alfarizi", "fazril nizart",
+            "januari", "jihaan kaltsum khairunnisa", "juan edra abiya",
+            "Khanza Rista Bhanuwati", "Kristiana Berta", "Marselino Prasetyo wijaya",
+            "M. Fadil Putra pratama", "M. Kafka adri Al-Maliq 67 sigmo", "M. Luthfi faturrahman",
+            "Natalis Fedora Purba", "Rafif Rakha Arkana Dih 🥀", "Rayhan Qolbu",
+            "Runika Alzariva", "Suci Pratiwi", "Syafa Damia Sakhi", "Syech Faris maulana",
+            "Tegar Tri Pambudi", "Tersa Usela", "Tiara Husna Humairah", "Zhafira Mayarista"
+        ];
+        
+        const totalSiswa = siswa.length;
+        let chartAbsenInst, chartKasInst;
+
+        // Inisialisasi Chart.js
+        window.onload = function() {
+            // Set Tanggal Jurnal
+            document.getElementById('jurnal-tanggal').valueAsDate = new Date();
+
+            // Chart Kehadiran
+            const ctxAbsen = document.getElementById('absenChart').getContext('2d');
+            chartAbsenInst = new Chart(ctxAbsen, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Hadir', 'Tidak Hadir'],
+                    datasets: [{
+                        data: [0, 100],
+                        backgroundColor: ['#2a9d8f', '#e63946'],
+                        borderWidth: 0
+                    }]
                 },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.code }}",
-                    "rightValue": 2000,
-                    "operator": {
-                      "type": "number",
-                      "operation": "equals"
-                    },
-                    "id": "2ecbce10-5138-4833-9c77-0206f38652af"
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Success"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom' } } }
+            });
+
+            // Chart Kas
+            const ctxKas = document.getElementById('kasChart').getContext('2d');
+            chartKasInst = new Chart(ctxKas, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Terkumpul', 'Kekurangan'],
+                    datasets: [{
+                        data: [0, 100],
+                        backgroundColor: ['#0077b6', '#caf0f8'],
+                        borderWidth: 0
+                    }]
                 },
-                "conditions": [
-                  {
-                    "id": "c1bad68b-0775-4f12-861d-3d465ee57852",
-                    "leftValue": "={{ $json.code }}",
-                    "rightValue": 1000,
-                    "operator": {
-                      "type": "number",
-                      "operation": "equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Processing"
-            }
-          ]
-        },
-        "options": {
-          "fallbackOutput": "extra",
-          "renameFallbackOutput": "Failed"
-        }
-      },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.3,
-      "position": [848, -304],
-      "id": "82aa1ddd-4a0d-47a7-95fd-3f845897c58d",
-      "name": "Check Status"
-    },
-    {
-      "parameters": {
-        "fieldToSplitOut": "videos",
-        "options": {
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom' } } }
+            });
 
-        }
-      },
-      "type": "n8n-nodes-base.splitOut",
-      "typeVersion": 1,
-      "position": [384, -128],
-      "id": "23bbfff9-fe24-44fe-9a22-93282b4e76f5",
-      "name": "Split Clips"
-    },
-    {
-      "parameters": {
-        "formTitle": "AI Clipper Video",
-        "formDescription": "Auto Clipping, Auto Edit, Auto Post\nBukan zaman nya lagi buat manual-manual an",
-        "formFields": {
-          "values": [
-            {
-              "fieldLabel": "URL Youtube (Bisa di custom mau URL apapun)",
-              "requiredField": true
-            },
-            {
-              "fieldLabel": "Skor Viral (0-100)",
-              "fieldType": "number",
-              "requiredField": true
-            }
-          ]
-        },
-        "options": {
-          "appendAttribution": false,
-          "buttonLabel": "Generate Short Video",
-          "customCss": ":root {\n\t--font-family: 'Inter', 'Open Sans', system-ui, sans-serif;\n\t--font-weight-normal: 400;\n\t--font-weight-bold: 600;\n\n\t--font-size-body: 12px;\n\t--font-size-label: 14px;\n\t--font-size-test-notice: 12px;\n\t--font-size-input: 14px;\n\t--font-size-header: 20px;\n\t--font-size-paragraph: 14px;\n\t--font-size-link: 12px;\n\t--font-size-error: 12px;\n\n\t--font-size-html-h1: 28px;\n\t--font-size-html-h2: 20px;\n\t--font-size-html-h3: 16px;\n\t--font-size-html-h4: 14px;\n\t--font-size-html-h5: 12px;\n\t--font-size-html-h6: 10px;\n\t--font-size-subheader: 14px;\n\n\t/* Colors — Pastel Red / White / Black */\n\t--color-background: #0c0c10;\n\n\t--color-test-notice-text: #e57373;\n\t--color-test-notice-bg: rgba(229, 115, 115, 0.12);\n\t--color-test-notice-border: rgba(229, 115, 115, 0.35);\n\n\t--color-card-bg: #15151a;\n\t--color-card-border: rgba(255, 255, 255, 0.08);\n\t--color-card-shadow: rgba(0, 0, 0, 0.6);\n\n\t--color-link: #ffffff;\n\t--color-header: #ffffff;\n\t--color-header-subtext: #b6b6c2;\n\t--color-label: #d4d4dc;\n\n\t--color-input-border: rgba(255, 255, 255, 0.14);\n    --color-input-text: #000000;\n\t--color-focus-border: #e57373;\n\n\t--color-submit-btn-bg: #e57373;\n\t--color-submit-btn-text: #ffffff;\n\n\t--color-error: #ef5350;\n\t--color-required: #e57373;\n\n\t--color-clear-button-bg: rgba(255, 255, 255, 0.12);\n\n\t--color-html-text: #e2e2ea;\n\t--color-html-link: #e57373;\n\n\t/* Border Radii */\n\t--border-radius-card: 12px;\n\t--border-radius-input: 10px;\n\t--border-radius-clear-btn: 50%;\n\t--card-border-radius: 12px;\n\n\t/* Spacing */\n\t--padding-container-top: 28px;\n\t--padding-card: 28px;\n\t--padding-test-notice-vertical: 12px;\n\t--padding-test-notice-horizontal: 24px;\n\t--margin-bottom-card: 18px;\n\t--padding-form-input: 14px;\n\t--card-padding: 28px;\n\t--card-margin-bottom: 18px;\n\n\t/* Dimensions */\n\t--container-width: 448px;\n\t--submit-btn-height: 50px;\n\t--checkbox-size: 18px;\n\n\t/* Others */\n\t--box-shadow-card: \n\t\t0px 10px 28px rgba(0, 0, 0, 0.65),\n\t\t0 0 0 1px rgba(255, 255, 255, 0.04);\n\n\t--opacity-placeholder: 0.45;\n}\n"
-        }
-      },
-      "type": "n8n-nodes-base.formTrigger",
-      "typeVersion": 2.3,
-      "position": [400, -608],
-      "id": "0c5ed6e0-4f02-4014-bedd-f95dd1f86b23",
-      "name": "On form submission",
-      "webhookId": "049c9f82-e3f8-4778-a1bd-f215eeabe4f4"
-    },
-    {
-      "parameters": {
-        "operation": "append",
-        "documentId": {
-          "__rl": true,
-          "value": "1bYilqYnDEdkkIwFUMf2HEIItSBSFH1CQ4F7KJBC0zG4",
-          "mode": "list",
-          "cachedResultName": "Auto Clipping Video with Vizard AI",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bYilqYnDEdkkIwFUMf2HEIItSBSFH1CQ4F7KJBC0zG4/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 961786042,
-          "mode": "list",
-          "cachedResultName": "Clip",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bYilqYnDEdkkIwFUMf2HEIItSBSFH1CQ4F7KJBC0zG4/edit#gid=961786042"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "Status": "Pending",
-            "Viral Score": "={{ $json.viralScore }}",
-            "Clip URL": "={{ $json.videoUrl }}",
-            "Editor URL": "={{ $json.clipEditorUrl }}",
-            "Clip Title": "={{ $json.title }}",
-            "Viral Reason": "={{ $json.viralReason }}",
-            "Clip ID": "={{ $json.videoId }}",
-            "Clip Duration (ms)": "={{ $json.videoMsDuration }}",
-            "Project ID": "={{ $('Get Status').item.json.projectId }}"
-          },
-          "matchingColumns": [
-            "Source URL"
-          ],
-          "schema": [
-            {
-              "id": "Status",
-              "displayName": "Status",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Project ID",
-              "displayName": "Project ID",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Clip ID",
-              "displayName": "Clip ID",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Clip URL",
-              "displayName": "Clip URL",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Clip Duration (ms)",
-              "displayName": "Clip Duration (ms)",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Clip Title",
-              "displayName": "Clip Title",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Viral Score",
-              "displayName": "Viral Score",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Viral Reason",
-              "displayName": "Viral Reason",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Editor URL",
-              "displayName": "Editor URL",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {
+            RenderTabel();
+        };
 
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            event.currentTarget.classList.add('active');
         }
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.7,
-      "position": [384, 64],
-      "id": "dddfe43f-70ed-494b-bf35-484f048e780c",
-      "name": "Append Clips",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "fszf6Tb1uFJbQKzh",
-          "name": "Johan Google Sheets"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "loose",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "6c00620e-694f-4414-acd8-c46ef6235b24",
-              "leftValue": "={{ $json.viralScore }}",
-              "rightValue": "={{ $('Configuration').item.json.viral_score }}",
-              "operator": {
-                "type": "number",
-                "operation": "gte"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "looseTypeValidation": true,
-        "options": {
 
-        }
-      },
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2.2,
-      "position": [624, 64],
-      "id": "770afb8b-2878-4167-b7bf-a520ce382c38",
-      "name": "Filter by Viral Score"
-    },
-    {
-      "parameters": {
-        "maxItems": "={{ $('Configuration').item.json.publish_limit }}"
-      },
-      "type": "n8n-nodes-base.limit",
-      "typeVersion": 1,
-      "position": [848, 64],
-      "id": "6489c145-d80e-4bd2-ae2b-01bd8a052b42",
-      "name": "Limit Clips"
-    },
-    {
-      "parameters": {
-        "operation": "append",
-        "documentId": {
-          "__rl": true,
-          "value": "1bYilqYnDEdkkIwFUMf2HEIItSBSFH1CQ4F7KJBC0zG4",
-          "mode": "list",
-          "cachedResultName": "Auto Clipping Video with Vizard AI",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bYilqYnDEdkkIwFUMf2HEIItSBSFH1CQ4F7KJBC0zG4/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": "gid=0",
-          "mode": "list",
-          "cachedResultName": "Source",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bYilqYnDEdkkIwFUMf2HEIItSBSFH1CQ4F7KJBC0zG4/edit#gid=0"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "Status": "Success",
-            "Project ID": "={{ $json.projectId }}",
-            "Source URL": "={{ $('Configuration').item.json.video_url }}",
-            "Project Name": "={{ $('Configuration').item.json.project_name }}",
-            "Language": "={{ $('Configuration').item.json.video_lang }}",
-            "Keywords": "={{ $('Configuration').item.json.keywords }}"
-          },
-          "matchingColumns": [
-            "Source URL"
-          ],
-          "schema": [
-            {
-              "id": "Status",
-              "displayName": "Status",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "Source URL",
-              "displayName": "Source URL",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Project Name",
-              "displayName": "Project Name",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Language",
-              "displayName": "Language",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Keywords",
-              "displayName": "Keywords",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Project ID",
-              "displayName": "Project ID",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "Error Message",
-              "displayName": "Error Message",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {
+        // Render Tabel Absen & Kas
+        function RenderTabel() {
+            const bodyAbsen = document.getElementById('body-absen');
+            const bodyKas = document.getElementById('body-kas');
 
+            siswa.forEach((nama, index) => {
+                // Tabel Absen
+                let trA = document.createElement('tr');
+                trA.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td id="nama_siswa_${index}" style="font-weight: 500;">${nama}</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="absen_hari_${index}" value="H" onchange="hitungHariIni()">H</label>
+                            <label><input type="radio" name="absen_hari_${index}" value="S" onchange="hitungHariIni()">S</label>
+                            <label><input type="radio" name="absen_hari_${index}" value="I" onchange="hitungHariIni()">I</label>
+                            <label><input type="radio" name="absen_hari_${index}" value="A" onchange="hitungHariIni()">A</label>
+                        </div>
+                    </td>
+                    <td><input type="number" class="input-small" id="hadir_smstr_${index}" value="0" oninput="hitungSemuaSemester()"></td>
+                    <td><input type="number" class="input-small" id="sakit_smstr_${index}" value="0" oninput="hitungSemuaSemester()"></td>
+                    <td><input type="number" class="input-small" id="alpa_smstr_${index}" value="0" oninput="hitungSemuaSemester()"></td>
+                    <td><span id="persen_smstr_${index}" style="font-weight:bold;">0%</span></td>
+                `;
+                bodyAbsen.appendChild(trA);
+
+                // Tabel Kas
+                let checkboxes = '';
+                for(let i=1; i<=31; i++) {
+                    checkboxes += `<input type="checkbox" id="kas_harian_${index}_${i}" disabled style="width: 15px; height: 15px;">`;
+                }
+
+                let trK = document.createElement('tr');
+                trK.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${nama}</td>
+                    <td><input type="number" id="kas_bulanan_${index}" style="width: 100px; padding: 8px;" value="0" oninput="prosesSemuaKas()"></td>
+                    <td><div style="display: flex; gap: 3px; flex-wrap: wrap;">${checkboxes}</div></td>
+                `;
+                bodyKas.appendChild(trK);
+            });
         }
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.7,
-      "position": [624, -128],
-      "id": "29c61fa4-4d38-4065-bd32-6fada81b1012",
-      "name": "Append Source (Success)",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "fszf6Tb1uFJbQKzh",
-          "name": "Johan Google Sheets"
+
+        // LOGIKA ABSENSI
+        function hitungHariIni() {
+            let h = 0, s = 0, i = 0, a = 0;
+            for(let x=0; x<totalSiswa; x++) {
+                let radio = document.querySelector(`input[name="absen_hari_${x}"]:checked`);
+                if(radio) {
+                    if(radio.value === "H") h++;
+                    if(radio.value === "S") s++;
+                    if(radio.value === "I") i++;
+                    if(radio.value === "A") a++;
+                }
+            }
+            document.getElementById('count-hadir').innerText = h;
+            document.getElementById('count-sakit').innerText = s;
+            document.getElementById('count-izin').innerText = i;
+            document.getElementById('count-alpa').innerText = a;
         }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "append",
-        "documentId": {
-          "__rl": true,
-          "value": "1bYilqYnDEdkkIwFUMf2HEIItSBSFH1CQ4F7KJBC0zG4",
-          "mode": "list",
-          "cachedResultName": "Auto Clipping Video with Vizard AI",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bYilqYnDEdkkIwFUMf2HEIItSBSFH1CQ4F7KJBC0zG4/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": "gid=0",
-          "mode": "list",
-          "cachedResultName": "Source",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bYilqYnDEdkkIwFUMf2HEIItSBSFH1CQ4F7KJBC0zG4/edit#gid=0"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "Status": "Failed",
-            "Project ID": "={{ $json.projectId }}",
-            "Source URL": "={{ $('Configuration').item.json.video_url }}",
-            "Project Name": "={{ $('Configuration').item.json.project_name }}",
-            "Language": "={{ $('Configuration').item.json.video_lang }}",
-            "Keywords": "={{ $('Configuration').item.json.keywords }}",
-            "Error Message": "={{ $json.errMsg }}"
-          },
-          "matchingColumns": [
-            "Source URL"
-          ],
-          "schema": [
-            {
-              "id": "Status",
-              "displayName": "Status",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "Source URL",
-              "displayName": "Source URL",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Project Name",
-              "displayName": "Project Name",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Language",
-              "displayName": "
+
+        function hitungSemuaSemester() {
+            let totalHariSmstr = parseInt(document.getElementById('total-hari-semester').value) || 1;
+            let totalHadirKelas = 0;
+
+            for(let i=0; i<totalSiswa; i++) {
+                let hadir = parseInt(document.getElementById(`hadir_smstr_${i}`).value) || 0;
+                let sakit = parseInt(document.getElementById(`sakit_smstr_${i}`).value) || 0;
+                let alpa = parseInt(document.getElementById(`alpa_smstr_${i}`).value) || 0;
+
+                let persenIndividu = (hadir / totalHariSmstr) * 100;
+                if(persenIndividu > 100) persenIndividu = 100;
+                
+                let namaCell = document.getElementById(`nama_siswa_${i}`);
+                let persenCell = document.getElementById(`persen_smstr_${i}`);
+                
+                persenCell.innerText = persenIndividu.toFixed(1) + '%';
+                totalHadirKelas += hadir;
+
+                // Logika Warna Nama Siswa
+                if (alpa > 5) {
+                    namaCell.style.color = "var(--danger)"; // Merah
+                } else if (sakit > 5) {
+                    namaCell.style.color = "var(--warning)"; // Biru Gelap
+                } else {
+                    namaCell.style.color = "var(--text-dark)"; // Normal
+                }
+            }
+
+            // Update Chart Absen di Dashboard
+            let rataRataKelas = (totalHadirKelas / (totalHariSmstr * totalSiswa)) * 100;
+            if(rataRataKelas > 100) rataRataKelas = 100;
+
+            document.getElementById('teks-persen-absen').innerText = rataRataKelas.toFixed(1) + '%';
+            chartAbsenInst.data.datasets[0].data = [rataRataKelas, 100 - rataRataKelas];
+            chartAbsenInst.update();
+        }
+
+        // LOGIKA KAS
+        function prosesSemuaKas() {
+            let targetPerSiswa = parseInt(document.getElementById('target-kas-siswa').value) || 1;
+            let targetTotalKelas = targetPerSiswa * totalSiswa;
+            let totalTerkumpul = 0;
+
+            for(let i=0; i<totalSiswa; i++) {<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Kelas 9D - Ocean Theme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #0077b6;
+            --secondary: #00b4d8;
+            --accent: #90e0ef;
+            --background: #caf0f8;
+            --white: rgba(255, 255, 255, 0.9);
+            --text-dark: #023e8a;
+            --success: #2a9d8f;
+            --danger: #e63946;
+            --warning: #00008b; /* Biru Gelap untuk Sakit */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+            background-attachment: fixed; color: var(--text-dark); min-height: 100vh; display: flex;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.3); padding: 2rem; display: flex;
+            flex-direction: column; gap: 1rem;
+        }
+
+        .sidebar h2 { color: white; text-align: center; margin-bottom: 2rem; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+        .nav-btn {
+            padding: 12px 20px; background: rgba(255, 255, 255, 0.8); border: none; border-radius: 10px;
+            cursor: pointer; font-size: 16px; font-weight: 500; color: var(--primary);
+            transition: all 0.3s ease; text-align: left;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(0, 119, 182, 0.3); transform: translateX(5px);
+        }
+
+        /* Main Content */
+        .main-content { flex: 1; padding: 2rem; overflow-y: auto; height: 100vh; }
+
+        .section {
+            display: none; background: var(--white); backdrop-filter: blur(10px); border-radius: 20px;
+            padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); animation: fadeIn 0.4s ease-in-out;
+        }
+        .section.active { display: block; }
+
+        h1 { color: var(--primary); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+
+        /* Dashboard Charts Container */
+        .charts-container {
+            display: flex; gap: 20px; margin-bottom: 2rem; flex-wrap: wrap;
+        }
+        
+        .chart-box {
+            flex: 1; min-width: 250px; background: white; padding: 20px; border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-top: 5px solid var(--secondary);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .chart-box h3 { color: var(--text-dark); margin-bottom: 10px; font-size: 16px; text-align: center;}
+        .chart-box .persen-teks { font-size: 28px; font-weight: bold; color: var(--primary); margin-top: 10px; }
+        
+        /* Canvas untuk diagram agar tidak terlalu besar */
+        .canvas-wrapper { width: 180px; height: 180px; } 
+
+        /* Tables */
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: white; border-radius: 10px; overflow: hidden; font-size: 14px; }
+        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #eee; vertical-align: middle; }
+        th { background-color: var(--primary); color: white; font-weight: 500; }
+        tr:hover { background-color: #f8f9fa; }
+
+        /* Forms & Inputs */
+        input[type="text"], input[type="number"], input[type="date"] {
+            width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-family: inherit;
+        }
+        .input-small { width: 60px !important; padding: 8px !important; text-align: center;}
+        
+        .radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .radio-group label { cursor: pointer; display: flex; align-items: center; gap: 3px; font-size: 13px; }
+
+        .settings-box {
+            background: rgba(0, 180, 216, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 10px; border: 1px dashed var(--primary); flex-wrap: wrap;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; flex-direction: row; flex-wrap: wrap; justify-content: center; padding: 1rem; }
+            .sidebar h2 { width: 100%; margin-bottom: 0.5rem; }
+            .main-content { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>🌊 Kelas 9D</h2>
+        <button class="nav-btn active" onclick="showSection('dashboard')">🏠 Dashboard</button>
+        <button class="nav-btn" onclick="showSection('absen')">📝 Absen</button>
+        <button class="nav-btn" onclick="showSection('kas')">💰 Kas</button>
+        <button class="nav-btn" onclick="showSection('jurnal')">📖 Jurnal</button>
+    </div>
+
+    <div class="main-content">
+        
+        <div id="dashboard" class="section active">
+            <h1>Dashboard Analytics</h1>
+            
+            <div class="charts-container">
+                <div class="chart-box">
+                    <h3>Kehadiran Kelas (1 Semester)</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="absenChart"></canvas>
+                    </div>
+                    <div class="persen-teks" id="teks-persen-absen">0%</div>
+                </div>
+
+                <div class="chart-box">
+                    <h3>Pencapaian Kas (1 Semester)</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="kasChart"></canvas>
+                    </div>
+                    <div class="persen-teks" id="teks-persen-kas">0%</div>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                <h3 style="color: var(--primary); margin-bottom: 10px;">Rekap Absen Hari Ini:</h3>
+                <div style="display: flex; gap: 20px; font-weight: bold; flex-wrap: wrap;">
+                    <span style="color: var(--success);">Hadir: <span id="count-hadir">0</span></span>
+                    <span style="color: #f4a261;">Sakit: <span id="count-sakit">0</span></span>
+                    <span style="color: #2a9d8f;">Izin: <span id="count-izin">0</span></span>
+                    <span style="color: var(--danger);">Alpa: <span id="count-alpa">0</span></span>
+                </div>
+            </div>
+        </div>
+
+        <div id="absen" class="section">
+            <h1>Buku Absensi Semester</h1>
+            
+            <div class="settings-box">
+                <label style="font-weight: bold;">Total Hari Efektif 1 Semester:</label>
+                <input type="number" id="total-hari-semester" class="input-small" value="100" oninput="hitungSemuaSemester()">
+                <span>Hari</span>
+            </div>
+            
+            <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                *Catatan: Nama berwarna <b style="color:red;">Merah</b> = Alpa > 5. Nama berwarna <b style="color:darkblue;">Biru Gelap</b> = Sakit > 5.
+            </p>
+
+            <div class="table-container">
+                <table id="tabel-absen">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Siswa</th>
+                            <th>Harian</th>
+                            <th>Total Hadir</th>
+                            <th>Total Sakit</th>
+                            <th>Total Alpa</th>
+                            <th>% Smstr</th>
+                        </tr>
+                    </thead>
+                    <tbody id="body-absen">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="kas" class="section">
+            <h1>Buku Kas Semester</h1>
+            
+            <div class="settings-box">
+                <label style="font-weight: bold;">Target Kas Per Siswa (1 Smstr): Rp</label>
+                <input type="number" id="target-kas-siswa" style="width: 120px; padding: 8px;" value="150000" oninput="prosesSemuaKas()">
+                <div style="margin-left: auto; font-weight: bold; color: var(--primary);">
+                    Terkumpul: <span id="total-kas-rp">Rp 0</span>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="tabel-kas">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Siswa</th>
+                            <th>Nominal Bayar (Rp)</th>
+                            <th>Kas Harian (Auto)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="body-kas">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="jurnal" class="section">
+            <h1>Jurnal Kelas</h1>
+            <div style="margin-bottom: 15px;">
+                <label>Tanggal</label>
+                <input type="date" id="jurnal-tanggal">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label>Mata Pelajaran & Guru</label>
+                <input type="text" placeholder="Contoh: Matematika - Pak Budi">
+            </div>
+            <button style="background: var(--primary); color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;" onclick="alert('Jurnal berhasil disimpan!')">Simpan Jurnal</button>
+        </div>
+
+    </div>
+
+    <script>
+        const siswa = [
+            "Agung Ramaindra Syahputra", "Ainun Tiyas martiningsih", "Alessia Alzena Riangga",
+            "Almaira Faiqha", "Alya Faliha", "Amirah Julveni Maulana", "Andi Aqil",
+            "Aurora Felicia Angelie", "Bilqis Melani", "Chaya muja syatira",
+            "Fadhil oktavian nabil", "fahmi firjatullah", "faiz Alfarizi",
+            "farhan umaydillah radjiansyah", "fathir pradipta alfarizi", "fazril nizart",
+            "januari", "jihaan kaltsum khairunnisa", "juan edra abiya",
+            "Khanza Rista Bhanuwati", "Kristiana Berta", "Marselino Prasetyo wijaya",
+            "M. Fadil Putra pratama", "M. Kafka adri Al-Maliq 67 sigmo", "M. Luthfi faturrahman",
+            "Natalis Fedora Purba", "Rafif Rakha Arkana Dih 🥀", "Rayhan Qolbu",
+            "Runika Alzariva", "Suci Pratiwi", "Syafa Damia Sakhi", "Syech Faris maulana",
+            "Tegar Tri Pambudi", "Tersa Usela", "Tiara Husna Humairah", "Zhafira Mayarista"
+        ];
+        
+        const totalSiswa = siswa.length;
+        let chartAbsenInst, chartKasInst;
+
+        // Inisialisasi Chart.js
+        window.onload = function() {
+            // Set Tanggal Jurnal
+            document.getElementById('jurnal-tanggal').valueAsDate = new Date();
+
+            // Chart Kehadiran
+            const ctxAbsen = document.getElementById('absenChart').getContext('2d');
+            chartAbsenInst = new Chart(ctxAbsen, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Hadir', 'Tidak Hadir'],
+                    datasets: [{
+                        data: [0, 100],
+                        backgroundColor: ['#2a9d8f', '#e63946'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom' } } }
+            });
+
+            // Chart Kas
+            const ctxKas = document.getElementById('kasChart').getContext('2d');
+            chartKasInst = new Chart(ctxKas, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Terkumpul', 'Kekurangan'],
+                    datasets: [{
+                        data: [0, 100],
+                        backgroundColor: ['#0077b6', '#caf0f8'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom' } } }
+            });
+
+            RenderTabel();
+        };
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // Render Tabel Absen & Kas
+        function RenderTabel() {
+            const bodyAbsen = document.getElementById('body-absen');
+            const bodyKas = document.getElementById('body-kas');
+
+            siswa.forEach((nama, index) => {
+                // Tabel Absen
+                let trA = document.createElement('tr');
+                trA.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td id="nama_siswa_${index}" style="font-weight: 500;">${nama}</td>
+                    <td>
+                        <div class="radio-group">
+                            <label><input type="radio" name="absen_hari_${index}" value="H" onchange="hitungHariIni()">H</label>
+                            <label><input type="radio" name="absen_hari_${index}" value="S" onchange="hitungHariIni()">S</label>
+                            <label><input type="radio" name="absen_hari_${index}" value="I" onchange="hitungHariIni()">I</label>
+                            <label><input type="radio" name="absen_hari_${index}" value="A" onchange="hitungHariIni()">A</label>
+                        </div>
+                    </td>
+                    <td><input type="number" class="input-small" id="hadir_smstr_${index}" value="0" oninput="hitungSemuaSemester()"></td>
+                    <td><input type="number" class="input-small" id="sakit_smstr_${index}" value="0" oninput="hitungSemuaSemester()"></td>
+                    <td><input type="number" class="input-small" id="alpa_smstr_${index}" value="0" oninput="hitungSemuaSemester()"></td>
+                    <td><span id="persen_smstr_${index}" style="font-weight:bold;">0%</span></td>
+                `;
+                bodyAbsen.appendChild(trA);
+
+                // Tabel Kas
+                let checkboxes = '';
+                for(let i=1; i<=31; i++) {
+                    checkboxes += `<input type="checkbox" id="kas_harian_${index}_${i}" disabled style="width: 15px; height: 15px;">`;
+                }
+
+                let trK = document.createElement('tr');
+                trK.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${nama}</td>
+                    <td><input type="number" id="kas_bulanan_${index}" style="width: 100px; padding: 8px;" value="0" oninput="prosesSemuaKas()"></td>
+                    <td><div style="display: flex; gap: 3px; flex-wrap: wrap;">${checkboxes}</div></td>
+                `;
+                bodyKas.appendChild(trK);
+            });
+        }
+
+        // LOGIKA ABSENSI
+        function hitungHariIni() {
+            let h = 0, s = 0, i = 0, a = 0;
+            for(let x=0; x<totalSiswa; x++) {
+                let radio = document.querySelector(`input[name="absen_hari_${x}"]:checked`);
+                if(radio) {
+                    if(radio.value === "H") h++;
+                    if(radio.value === "S") s++;
+                    if(radio.value === "I") i++;
+                    if(radio.value === "A") a++;
+                }
+            }
+            document.getElementById('count-hadir').innerText = h;
+            document.getElementById('count-sakit').innerText = s;
+            document.getElementById('count-izin').innerText = i;
+            document.getElementById('count-alpa').innerText = a;
+        }
+
+        function hitungSemuaSemester() {
+            let totalHariSmstr = parseInt(document.getElementById('total-hari-semester').value) || 1;
+            let totalHadirKelas = 0;
+
+            for(let i=0; i<totalSiswa; i++) {
+                let hadir = parseInt(document.getElementById(`hadir_smstr_${i}`).value) || 0;
+                let sakit = parseInt(document.getElementById(`sakit_smstr_${i}`).value) || 0;
+                let alpa = parseInt(document.getElementById(`alpa_smstr_${i}`).value) || 0;
+
+                let persenIndividu = (hadir / totalHariSmstr) * 100;
+                if(persenIndividu > 100) persenIndividu = 100;
+                
+                let namaCell = document.getElementById(`nama_siswa_${i}`);
+                let persenCell = document.getElementById(`persen_smstr_${i}`);
+                
+                persenCell.innerText = persenIndividu.toFixed(1) + '%';
+                totalHadirKelas += hadir;
+
+                // Logika Warna Nama Siswa
+                if (alpa > 5) {
+                    namaCell.style.color = "var(--danger)"; // Merah
+                } else if (sakit > 5) {
+                    namaCell.style.color = "var(--warning)"; // Biru Gelap
+                } else {
+                    namaCell.style.color = "var(--text-dark)"; // Normal
+                }
+            }
+
+            // Update Chart Absen di Dashboard
+            let rataRataKelas = (totalHadirKelas / (totalHariSmstr * totalSiswa)) * 100;
+            if(rataRataKelas > 100) rataRataKelas = 100;
+
+            document.getElementById('teks-persen-absen').innerText = rataRataKelas.toFixed(1) + '%';
+            chartAbsenInst.data.datasets[0].data = [rataRataKelas, 100 - rataRataKelas];
+            chartAbsenInst.update();
+        }
+
+        // LOGIKA KAS
+        function prosesSemuaKas() {
+            let targetPerSiswa = parseInt(document.getElementById('target-kas-siswa').value) || 1;
+            let targetTotalKelas = targetPerSiswa * totalSiswa;
+            let totalTerkumpul = 0;
+
+            for(let i=0; i<totalSiswa; i++) {
+                let nominal = parseInt(document.getElementById(`kas_bulanan_${i}`).value) || 0;
+                totalTerkumpul += nominal;
+
+                // Auto Centang Harian (dibagi 1000)
+                let hariCek = Math.floor(nominal / 1000);
+                if(hariCek > 31) hariCek = 31;
+                for(let d=1; d<=31; d++) {
+                    document.getElementById(`kas_harian_${i}_${d}`).checked = (d <= hariCek);
+                }
+            }
+
+            // Update Teks Rupiah
+            document.getElementById('total-kas-rp').innerText = new Intl.NumberFormat('id-ID', {
+                style: 'currency', currency: 'IDR', minimumFractionDigits: 0
+            }).format(totalTerkumpul);
+
+            // Update Chart Kas di Dashboard
+            let persenKas = (totalTerkumpul / targetTotalKelas) * 100;
+            if(persenKas > 100) persenKas = 100;
+
+            document.getElementById('teks-persen-kas').innerText = persenKas.toFixed(1) + '%';
+            chartKasInst.data.datasets[0].data = [persenKas, 100 - persenKas];
+            chartKasInst.update();
+        }
+    </script>
+</body>
+</html>
+
+                let nominal = parseInt(document.getElementById(`kas_bulanan_${i}`).value) || 0;
+                totalTerkumpul += nominal;
+
+                // Auto Centang Harian (dibagi 1000)
+                let hariCek = Math.floor(nominal / 1000);
+                if(hariCek > 31) hariCek = 31;
+                for(let d=1; d<=31; d++) {
+                    document.getElementById(`kas_harian_${i}_${d}`).checked = (d <= hariCek);
+                }
+            }
+
+            // Update Teks Rupiah
+            document.getElementById('total-kas-rp').innerText = new Intl.NumberFormat('id-ID', {
+                style: 'currency', currency: 'IDR', minimumFractionDigits: 0
+            }).format(totalTerkumpul);
+
+            // Update Chart Kas di Dashboard
+            let persenKas = (totalTerkumpul / targetTotalKelas) * 100;
+            if(persenKas > 100) persenKas = 100;
+
+            document.getElementById('teks-persen-kas').innerText = persenKas.toFixed(1) + '%';
+            chartKasInst.data.datasets[0].data = [persenKas, 100 - persenKas];
+            chartKasInst.update();
+        }
+    </script>
+</body>
+</html>
+
